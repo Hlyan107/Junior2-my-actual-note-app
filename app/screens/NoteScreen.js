@@ -9,13 +9,13 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  findNodeHandle,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EachNote from "../components/EachNote";
 import colors from "../constants/colors";
 import RoundIconBtn from "../components/RoundIconBtn";
 import { useNotes } from "../provider/NoteProvider";
+import { format } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screen = Dimensions.get("window");
@@ -41,7 +41,7 @@ export default function NoteScreen({ navigation }) {
     if (note) {
       const newNote = {
         content: note,
-        date: "Sep 26, 2022",
+        date: format(new Date(), "PPpp"),
         count: 0,
         id: Date.now(),
       };
@@ -53,14 +53,24 @@ export default function NoteScreen({ navigation }) {
     }
   };
 
-  // const handleEditNoteOnEach = (note) => {};
+  const handleDeleteNoteOnEach = async (note) => {
+    const newNotes = notes.filter((n) => n.id !== note.id);
+    setNotes(newNotes);
+    await AsyncStorage.setItem("notes", JSON.stringify(newNotes));
+  };
 
   const goEdit = (note) => {
     navigation.navigate("EditScreen", { note });
   };
   //in flat list
   const renderItem = ({ item }) => {
-    return <EachNote note={item} handleContentDT={goEdit} />;
+    return (
+      <EachNote
+        note={item}
+        handleContentDT={goEdit}
+        deleteNote={handleDeleteNoteOnEach}
+      />
+    );
   };
 
   return (

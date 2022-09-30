@@ -10,6 +10,7 @@ import DoubleClick from "react-native-double-tap";
 import colors from "../constants/colors";
 import RenderHTML from "./RenderHTML";
 import RoundIconBtn from "./RoundIconBtn";
+import EachNoteMenu from "./EachNoteMenu";
 
 const screen = Dimensions.get("window");
 
@@ -26,34 +27,43 @@ export default function EachNote({
   note,
   handleContentDT,
   handleCountDT,
+  deleteNote,
 }) {
   return (
     <View style={styles.container}>
-      <DoubleClick
-        doubleTap={() => {
-          console.log("tapped twice", note);
-          handleContentDT(note);
-          //above is the key to send data
-        }}
-        delay={500}
-      >
-        <View style={[styles.doubleTap, styles.contentWrapper]}>
-          <RenderHTML
-            value={note.content}
-            style={styles.renderHTML}
-            tagsStyles={tagsStyles}
-          />
-        </View>
-      </DoubleClick>
+      <View style={styles.noteHeader}>
+        <Text style={styles.dateText}>{note.date}</Text>
+        <EachNoteMenu deleteNote={deleteNote} note={note} />
+      </View>
+      <View style={styles.contentOutterWrapper}>
+        <DoubleClick
+          doubleTap={() => {
+            console.log("tapped twice", note);
+            handleContentDT(note);
+            //above is the key to send data
+          }}
+          delay={500}
+        >
+          <View style={[styles.doubleTap, styles.contentWrapper]}>
+            <RenderHTML
+              value={note.content}
+              style={styles.renderHTML}
+              tagsStyles={tagsStyles}
+            />
+          </View>
+        </DoubleClick>
+      </View>
+
       <View style={styles.hairSeperator} />
-      <DoubleClick doubleTap={() => handleCountDT} delay={500}>
+
+      <DoubleClick doubleTap={() => alert("button tapped")} delay={500}>
         <View style={[styles.doubleTap, styles.buttonWrapper]}>
           <RoundIconBtn
             feathername="check-circle"
             size={20}
             color={colors.black}
           />
-          <Text style={styles.textTap}>{note.count}</Text>
+          <Text style={styles.countText}>{note.count}</Text>
         </View>
       </DoubleClick>
     </View>
@@ -68,19 +78,38 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     elevation: 5,
   },
+  noteHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    backgroundColor: colors.white,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    // borderLeftWidth: StyleSheet.hairlineWidth,
+    // borderRightWidth: StyleSheet.hairlineWidth,
+    // borderTopWidth: StyleSheet.hairlineWidth,
+    elevation: 2,
+  },
+  dateText: {
+    fontSize: 12,
+    opacity: 0.5,
+    marginLeft: 5,
+  },
   doubleTap: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.white,
   },
+  contentOutterWrapper: {},
   contentWrapper: {
     minHeight: 60,
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderTopWidth: StyleSheet.hairlineWidth,
+    // borderTopLeftRadius: 5,
+    // borderTopRightRadius: 5,
+    // borderLeftWidth: StyleSheet.hairlineWidth,
+    // borderRightWidth: StyleSheet.hairlineWidth,
+    // borderTopWidth: StyleSheet.hairlineWidth,
 
     elevation: 2,
   },
@@ -89,25 +118,27 @@ const styles = StyleSheet.create({
     // backgroundColor: "cyan",
     padding: 10,
     width: screen.width * 0.93,
+    borderWidth: 0,
   },
   hairSeperator: {
     height: StyleSheet.hairlineWidth,
     marginHorizontal: 20,
   },
   buttonWrapper: {
-    minHeight: 40,
-    flexDirection: "row",
+    // borderLeftWidth: StyleSheet.hairlineWidth,
+    // borderRightWidth: StyleSheet.hairlineWidth,
+    // borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
-
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
     elevation: 2,
-    // backgroundColor: colors.notefooterBlue,
+    flexDirection: "row",
+    minHeight: 40,
   },
-  textTap: {
+
+  countText: {
     marginLeft: 5,
     color: colors.black,
+    opacity: 0.8,
+    fontSize: 13,
   },
 });
