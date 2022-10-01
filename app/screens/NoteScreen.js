@@ -13,9 +13,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import EachNote from "../components/EachNote";
 import colors from "../constants/colors";
-import RoundIconBtn from "../components/RoundIconBtn";
+import RoundIconBtn from "../provider/RoundIconBtn";
+import SortMenu from "../provider/SortMenu";
 import { useNotes } from "../provider/NoteProvider";
 import { format } from "date-fns";
+import { nanoid } from "nanoid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screen = Dimensions.get("window");
@@ -41,9 +43,11 @@ export default function NoteScreen({ navigation }) {
     if (note) {
       const newNote = {
         content: note,
-        date: format(new Date(), "PPpp"),
+        date: format(new Date(), "MMM d, yyyy. h:m aaa"),
+        updatedDate: format(new Date(), "MMM d, yyyy. h:m aaa"),
+        originalDate: Date.now(),
         count: 0,
-        id: Date.now(),
+        id: nanoid(),
       };
       // notes.unshift(newNote);
       const updatedNotes = [newNote, ...notes];
@@ -69,6 +73,7 @@ export default function NoteScreen({ navigation }) {
         note={item}
         handleContentDT={goEdit}
         deleteNote={handleDeleteNoteOnEach}
+        goEdit={goEdit}
       />
     );
   };
@@ -89,9 +94,7 @@ export default function NoteScreen({ navigation }) {
       />
 
       <View style={styles.footer}>
-        <TouchableOpacity onPress={goEdit}>
-          <RoundIconBtn name="sort-variant" size={25} color={colors.white} />
-        </TouchableOpacity>
+        <SortMenu />
         <TextInput
           style={styles.textInput}
           multiline

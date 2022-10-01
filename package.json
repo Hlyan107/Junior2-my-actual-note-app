@@ -26,6 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "date-fns": "^2.29.3",
+    "nanoid": "^4.0.0",
     "react-native-double-tap": "^1.0.1",
     "react-native-modal": "^13.0.1",
     "react-native-pell-rich-editor": "^1.8.8",

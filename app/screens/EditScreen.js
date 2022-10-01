@@ -17,16 +17,18 @@ import {
 } from "react-native-pell-rich-editor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNotes } from "../provider/NoteProvider";
+import { format } from "date-fns";
 
 const screen = Dimensions.get("window");
 
 export default function EditScreen({ navigation, route }) {
   const richText = useRef();
-  const fromRoute = route.params.note;
+  const [placeholder, setPlaceholder] = useState("Edit like a pro");
+  const noteFromRoute = route.params.note;
   const { notes, setNotes, findAndSetNotes } = useNotes();
 
-  const [editNote, setEditNote] = useState(fromRoute);
-  const [editNoteContent, setEditNoteContent] = useState(fromRoute.content);
+  const [editNote, setEditNote] = useState(noteFromRoute);
+  const [editNoteContent, setEditNoteContent] = useState(noteFromRoute.content);
 
   useEffect(() => {
     findAndSetNotes();
@@ -42,14 +44,17 @@ export default function EditScreen({ navigation, route }) {
       const updatedNotes = notes.map((note) => {
         if (note.id === editNote.id) {
           note.content = editNoteContent;
+          note.updatedDate = format(new Date(), "MMM d, yyyy. h:m aaa");
         }
         return note;
       });
       setNotes(updatedNotes);
       await AsyncStorage.setItem("notes", JSON.stringify(updatedNotes));
-      console.log("submitted", updatedNotes);
+      // console.log("submitted", updatedNotes);
       setEditNoteContent("");
       navigation.goBack();
+    } else {
+      setPlaceholder("Let there be some text, please.");
     }
   };
 
@@ -63,7 +68,7 @@ export default function EditScreen({ navigation, route }) {
         ref={richText}
         initialContentHTML={editNoteContent}
         onChange={richTextHandle}
-        placeholder="Write your cool content here :)"
+        placeholder={placeholder}
         androidHardwareAccelerationDisabled={true}
         style={styles.richTextEditorStyle}
         initialHeight={250}

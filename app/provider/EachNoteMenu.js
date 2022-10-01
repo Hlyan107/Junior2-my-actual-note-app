@@ -9,7 +9,7 @@ import {
 } from "react-native-popup-menu";
 import RoundIconBtn from "./RoundIconBtn";
 
-const EachNoteMenu = ({ deleteNote, note }) => {
+const EachNoteMenu = ({ deleteNote, goEdit, note }) => {
   const displayDeleteAlert = (delNote) => {
     Alert.alert(
       "NO way to get back!",
@@ -31,16 +31,16 @@ const EachNoteMenu = ({ deleteNote, note }) => {
   };
 
   const lastUpdated = `Last Updated:\n ${note.date}`;
-
+  // const justTest = new Date(note.originalDate).getMilliseconds();
   return (
     <Menu>
       <MenuTrigger>
         <RoundIconBtn name="dots-horizontal" size={24} />
       </MenuTrigger>
       <MenuOptions>
-        <MenuOption onSelect={() => alert(`Save`)} style={styles.eachOption}>
+        {/* <MenuOption onSelect={() => alert(`Save`)} style={styles.eachOption}>
           <Text numberOfLines={2}>{lastUpdated}</Text>
-        </MenuOption>
+        </MenuOption> */}
         <MenuOption
           onSelect={() => {
             displayDeleteAlert(() => deleteNote(note));
@@ -52,12 +52,17 @@ const EachNoteMenu = ({ deleteNote, note }) => {
         </MenuOption>
         <MenuOption
           onSelect={() => {
-            displayDeleteAlert(() => deleteNote(notse));
+            goEdit(note);
           }}
           style={styles.eachOption}
         >
           <RoundIconBtn feathername="edit-3" />
           <Text>Edit</Text>
+        </MenuOption>
+        <MenuOption style={styles.lastUpdated}>
+          <Text style={styles.lastUpdatedText}>Last Updated:</Text>
+          <Text style={styles.lastUpdatedText}>{note.updatedDate}</Text>
+          {/* <Text style={styles.lastUpdatedText}>{justTest}</Text> */}
         </MenuOption>
       </MenuOptions>
     </Menu>
@@ -71,6 +76,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
+  },
+  lastUpdated: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lastUpdatedText: {
+    fontSize: 12,
+    opacity: 0.6,
   },
 });
 

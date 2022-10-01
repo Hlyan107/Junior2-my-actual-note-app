@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import DoubleClick from "react-native-double-tap";
+import DoubleClick from "../provider/DoubleClick";
 import colors from "../constants/colors";
 import RenderHTML from "./RenderHTML";
-import RoundIconBtn from "./RoundIconBtn";
-import EachNoteMenu from "./EachNoteMenu";
+import RoundIconBtn from "../provider/RoundIconBtn";
+import EachNoteMenu from "../provider/EachNoteMenu";
 
 const screen = Dimensions.get("window");
 
@@ -23,17 +23,17 @@ const tagsStyles = {
 //https://stackoverflow.com/questions/68966120/react-native-render-html-you-seem-to-update-the-x-prop-of-the-y-component-in-s
 
 export default function EachNote({
-  navigation,
   note,
   handleContentDT,
   handleCountDT,
   deleteNote,
+  goEdit,
 }) {
   return (
     <View style={styles.container}>
       <View style={styles.noteHeader}>
         <Text style={styles.dateText}>{note.date}</Text>
-        <EachNoteMenu deleteNote={deleteNote} note={note} />
+        <EachNoteMenu deleteNote={deleteNote} note={note} goEdit={goEdit} />
       </View>
       <View style={styles.contentOutterWrapper}>
         <DoubleClick
