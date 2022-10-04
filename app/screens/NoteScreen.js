@@ -43,8 +43,8 @@ export default function NoteScreen({ navigation }) {
     if (note) {
       const newNote = {
         content: note,
-        date: format(new Date(), "MMM d, yyyy. h:m aaa"),
-        updatedDate: format(new Date(), "MMM d, yyyy. h:m aaa"),
+        date: format(new Date(), "MMM d, yyyy. h:mm aaa"),
+        updatedDate: format(new Date(), "MMM d, yyyy. h:mm aaa"),
         originalDate: Date.now(),
         count: 0,
         id: nanoid(),

@@ -44,7 +44,7 @@ export default function EditScreen({ navigation, route }) {
       const updatedNotes = notes.map((note) => {
         if (note.id === editNote.id) {
           note.content = editNoteContent;
-          note.updatedDate = format(new Date(), "MMM d, yyyy. h:m aaa");
+          note.updatedDate = format(new Date(), "MMM d, yyyy. h:mm aaa");
         }
         return note;
       });
